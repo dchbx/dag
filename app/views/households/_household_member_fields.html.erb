@@ -1,0 +1,15 @@
+<tbody>
+  <td><%= f.text_field :name, :value => f.object[:name]%></td>
+  <td>&nbsp;&nbsp;&nbsp;</td>
+  <td><%= f.select :relationship, HouseholdMember::RELATIONSHIP_KINDS, include_blank: true %></td>
+  <td>&nbsp;&nbsp;&nbsp;</td>
+  <td>
+  <%= f.text_field :name_related, list: "names" %>
+  <datalist id="names">
+    <% @members.each do |person| %>
+      <option value="<%= person[:name] %>"></option>
+    <% end %>
+  </datalist>
+</td>
+
+</tbody>

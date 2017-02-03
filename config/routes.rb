@@ -53,4 +53,11 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+  # resources :households do
+  #   resources :household_members
+  # end
+
+  resources :households
+  resources :household_members
+  
 end

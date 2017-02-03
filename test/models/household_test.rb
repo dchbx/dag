@@ -1,7 +1,9 @@
 require 'test_helper'
 
 class HouseholdTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  
+  test "valid household" do   
+    assert Household.new.valid? true
+  end
+
 end

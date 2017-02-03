@@ -1,0 +1,40 @@
+<%= form_for(@household) do |f| %>
+  <% if @household.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@household.errors.count, "error") %> prohibited this household from being saved:</h2>
+
+      <ul>
+      <% @household.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <table>
+    <thead>
+      <th>Member A</th>
+      <th>&nbsp;&nbsp;&nbsp;</th>
+      <th>Relation</th>
+      <th>&nbsp;&nbsp;&nbsp;</th>
+      <th>Member B</th>
+    </thead>
+    <%= f.fields_for :household_members do |builder| %>
+      <%=render 'household_member_fields', f: builder%>
+    <% end %>
+ <table>
+  <%= link_to_add_fields "Add Member", f, :household_members %>
+  <br /> <br />
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+ <br />
+ 
+ <div>
+  <h3> Relationships Defined </h3>
+  <%@relationships.each do |rel|%>
+    <li><%= print_relationship(rel) %></li>
+  <%end%>
+ </div>
+
+ <br/><br/>
