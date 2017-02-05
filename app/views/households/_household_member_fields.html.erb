@@ -4,9 +4,12 @@
   <td><%= f.select :relationship, HouseholdMember::RELATIONSHIP_KINDS, include_blank: true, selected: find_relationship(f.object)%></td>
   <td>&nbsp;&nbsp;&nbsp;</td>
   <td>
-    <%= f.text_field :name_related, list: "names", value: find_relation_to(f.object) %>
+    
+    <%#= f.text_field :name_related, list: "names", value: f.object.household.present? && !f.object.is_primary? ? f.object.household.primary_member.name : ""%>
+    <%= f.text_field :name_related, value: f.object.is_primary? ? "" : @household.primary_member.name, readonly: true %>
+    <%#= f.text_field :name_related, list: "names", value: find_relation_to(f.object), disabled: true %>
     <datalist id="names">
-      <% @members.each do |person| %>
+      <% @members.where(is_primary: true).each do |person| %>
         <option value="<%= person[:name] %>"></option>
       <% end %>
     </datalist>

@@ -4,7 +4,7 @@ module HouseholdsHelper
     successor = HouseholdMember.find(rel.successor_id).name
     relationship = rel.relationship
     preposition = relationship == 'unrelated' ? 'to' : 'of'
-    "<b>#{predecessor}</b> is <b>#{relationship}</b> #{preposition} <b>#{successor}</b>".html_safe
+    "<b>#{predecessor}</b> is <b>#{relationship.titleize.gsub(" ", " or ")}</b> #{preposition} <b>#{successor}</b>".html_safe
   end
 
   def find_relationship(household_member)

@@ -1,6 +1,6 @@
 <h2>Add Household Members</h2>
-<p>Add other members and their relationships.</p>
+<p>Add other members and their relationship to <b><%=@household.primary_member.name%></b></p>
 <%= render 'form' %>
 
-<%= link_to 'Show', @household %> |
+<!-- <%#= link_to 'Show', @household %> | -->
 <%= link_to 'Back', households_path %>

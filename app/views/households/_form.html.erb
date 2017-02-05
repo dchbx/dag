@@ -20,11 +20,11 @@
     </table>
   <%else%>
     <table>
-      <th>Member A</th>
+      <th>Member's</th>
       <th>&nbsp;&nbsp;&nbsp;</th>
-      <th>Relation</th>
+      <th>Relation to</th>
       <th>&nbsp;&nbsp;&nbsp;</th>
-      <th>Member B</th>
+      <th>Primary</th>
       <%= f.fields_for :household_members do |builder| %>
         <%=render 'household_member_fields', f: builder%>
       <% end %>

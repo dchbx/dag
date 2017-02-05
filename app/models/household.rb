@@ -42,4 +42,15 @@ class Household < ActiveRecord::Base
   def primaries
     household_members.where(is_primary: true)
   end
+
+  def primary_member
+    household_members.where(is_primary: true).first
+  end
+
+  def build_relationship_matrix
+    
+    household_members.each do |hm|
+      #byebug
+    end
+  end
 end

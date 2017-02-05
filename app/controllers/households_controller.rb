@@ -24,6 +24,7 @@ class HouseholdsController < ApplicationController
   def edit
     @members = Household.find(params[:id]).household_members
     @relationships = Relationship.where(household_id: params[:id])
+    relationship_matrix = @household.build_relationship_matrix
   end
 
   # POST /households
@@ -47,15 +48,12 @@ class HouseholdsController < ApplicationController
   def update
     respond_to do |format|
       if @household.update(household_params)
-
         params[:household][:household_members_attributes].each do |member|
           predecessor_name = member[1][:name]
           successor_name = member[1][:name_related]
           relationship_kind = member[1][:relationship]
-
           @household.add_household_member(@household.household_members.find_by_name(predecessor_name))
           @household.add_relationship(predecessor_name, successor_name, relationship_kind)
-          #byebug
         end
         format.html { redirect_to edit_household_path(@household), notice: 'Household was successfully updated.' }
         format.json { render :show, status: :ok, location: @household }
