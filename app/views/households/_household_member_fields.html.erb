@@ -1,15 +1,16 @@
 <tbody>
-  <td><%= f.text_field :name, :value => f.object[:name]%></td>
+  <td><%= f.text_field :name, value: f.object[:name]%></td>
   <td>&nbsp;&nbsp;&nbsp;</td>
-  <td><%= f.select :relationship, HouseholdMember::RELATIONSHIP_KINDS, include_blank: true %></td>
+  <td><%= f.select :relationship, HouseholdMember::RELATIONSHIP_KINDS, include_blank: true, selected: find_relationship(f.object)%></td>
   <td>&nbsp;&nbsp;&nbsp;</td>
   <td>
-  <%= f.text_field :name_related, list: "names" %>
-  <datalist id="names">
-    <% @members.each do |person| %>
-      <option value="<%= person[:name] %>"></option>
-    <% end %>
-  </datalist>
-</td>
-
+    <%= f.text_field :name_related, list: "names", value: find_relation_to(f.object) %>
+    <datalist id="names">
+      <% @members.each do |person| %>
+        <option value="<%= person[:name] %>"></option>
+      <% end %>
+    </datalist>
+  </td>
+  <%#byebug%>
+  <td><%#= link_to 'Edit', edit_household_member_path(f.object) %></td>
 </tbody>

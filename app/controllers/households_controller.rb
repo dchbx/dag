@@ -33,7 +33,7 @@ class HouseholdsController < ApplicationController
 
     respond_to do |format|
       if @household.save
-        format.html { redirect_to @household, notice: 'Household was successfully created.' }
+        format.html { redirect_to edit_household_path(@household), notice: 'Household was successfully created.' }
         format.json { render :show, status: :created, location: @household }
       else
         format.html { render :new }
@@ -57,7 +57,7 @@ class HouseholdsController < ApplicationController
           @household.add_relationship(predecessor_name, successor_name, relationship_kind)
           #byebug
         end
-        format.html { redirect_to @household, notice: 'Household was successfully updated.' }
+        format.html { redirect_to edit_household_path(@household), notice: 'Household was successfully updated.' }
         format.json { render :show, status: :ok, location: @household }
       else
         format.html { render :edit }
@@ -86,7 +86,7 @@ class HouseholdsController < ApplicationController
     def household_params
       #params.fetch(:household, {})
       #params.require(:household).permit(:name, household_member_attributes: :name)
-      params.require(:household).permit(:name, household_members_attributes: [:id, :name, :relationship, :name_related, :primary_applicant, :household_id, :created_at, :updated_at])
+      params.require(:household).permit(:name, household_members_attributes: [:id, :name, :relationship, :name_related, :is_primary, :household_id, :created_at, :updated_at])
 
     end
 end
