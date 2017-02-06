@@ -48,14 +48,6 @@ class Household < ActiveRecord::Base
   end
 
   def build_relationship_matrix
-                       #yi
-                    # Mike(13)   Carol(14)   Greg(15)
-                    #  13           14          15
-    #xi # Mike (13)   self       unrelated    parent   
-        # Carol(14)   unrelated    self       
-        # Greg (15)   child                    self
-
-    #household_members = household_members.map(&:name)
     household_members_id = household_members.map(&:id)
     matrix_size = household_members.count
     matrix = Array.new(matrix_size){Array.new(matrix_size)} #[n*n] square matrix.
@@ -75,4 +67,17 @@ class Household < ActiveRecord::Base
     rel = Relationship.where(predecessor_id: member_a_id, successor_id: member_b_id).first
     return rel.relationship if rel.present?
   end
+
+  def find_missing_relationships(matrix)
+    missing_relationships = {}
+    matrix.each_with_index do |x, xi|
+      x.each_with_index do |y, yi|
+          if (xi > yi) && matrix[xi][yi].nil?
+             missing_relationships.merge!(xi => yi)
+          end
+      end
+    end
+    missing_relationships
+  end
+
 end

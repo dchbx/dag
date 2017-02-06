@@ -25,6 +25,7 @@ class HouseholdsController < ApplicationController
     @members = Household.find(params[:id]).household_members
     @relationships = Relationship.where(household_id: params[:id])
     @matrix = @household.build_relationship_matrix
+    @missing_relationships = @household.find_missing_relationships(@matrix)
   end
 
   # POST /households
