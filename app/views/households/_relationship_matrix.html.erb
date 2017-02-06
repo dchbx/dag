@@ -1,0 +1,21 @@
+<div>
+  <h3> Relationships Matrix </h3>
+  <table border = 1>
+    <thead>
+      <th></th> 
+      <%@members.each do |m|%>
+        <th><%=m.name%></th>
+      <%end%>
+    </thead>
+    <tbody>
+      <%@matrix.each_with_index do |relationships_row, index|%>
+        <tr>
+          <td><b><%=@members[index].name%></b></td>
+          <%relationships_row.each do |rel|%>
+            <td><%= rel%></td>
+          <%end%>
+        </tr>
+      <%end%>
+    </tbody>
+  </table>
+</div>

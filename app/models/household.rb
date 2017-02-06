@@ -48,9 +48,46 @@ class Household < ActiveRecord::Base
   end
 
   def build_relationship_matrix
-    
-    household_members.each do |hm|
-      #byebug
+                       #yi
+                    # Mike(13)   Carol(14)   Greg(15)
+                    #  13           14          15
+    #xi # Mike (13)   self       unrelated    parent   
+        # Carol(14)   unrelated    self       
+        # Greg (15)   child                    self
+
+    #household_members = household_members.map(&:name)
+    household_members_id = household_members.map(&:id)
+    matrix_size = household_members.count
+    matrix = Array.new(matrix_size){Array.new(matrix_size)} #[n*n] square matrix.
+    id_map = {}
+    household_members_id.each_with_index { |hmid, index| id_map.merge!(index => hmid ) }
+    matrix.each_with_index do |x, xi|
+      x.each_with_index do |y, yi|
+        matrix[xi][yi] = find_existing_relationship(id_map[xi], id_map[yi])
+        matrix[yi][xi] = find_existing_relationship(id_map[yi], id_map[xi]) # Populate Inverse
+      end
     end
+    
+    return matrix
+
+    # matrix.each_with_index do |x, xi|
+    #   x.each_with_index do |y, yi|
+    #     puts "element [#{xi}, #{yi}] is #{y}"
+    #   end
+    # end
+
+    # # visual representation 
+    # puts household_members.map(&:name).join("            ")
+    # puts household_members.map(&:id).join("               ")
+    # matrix.each do |r|
+    #   puts r.each { |p| p }.join("         ")
+    # end
+
+  end
+
+  def find_existing_relationship(member_a_id, member_b_id)
+    return "self" if member_a_id == member_b_id
+    rel = Relationship.where(predecessor_id: member_a_id, successor_id: member_b_id).first
+    return rel.relationship if rel.present?
   end
 end

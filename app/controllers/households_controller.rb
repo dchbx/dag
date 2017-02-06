@@ -24,7 +24,7 @@ class HouseholdsController < ApplicationController
   def edit
     @members = Household.find(params[:id]).household_members
     @relationships = Relationship.where(household_id: params[:id])
-    relationship_matrix = @household.build_relationship_matrix
+    @matrix = @household.build_relationship_matrix
   end
 
   # POST /households

@@ -28,7 +28,8 @@ class HouseholdMember < ActiveRecord::Base
     else
       if self.id != successor.id
         relationships.create(household_id: self.household.id, predecessor_id: self.id, successor_id: successor.id, relationship: relationship_kind) # Direct Relationship
-        relationships.create(household_id: self.household.id, predecessor_id: successor.id, successor_id: self.id, relationship: inverse_relationship_kind(relationship_kind)) # Inverse Relationship
+        #TODO ##
+        relationships.create(household_id: self.household.id, household_member_id: successor.id, predecessor_id: successor.id, successor_id: self.id, relationship: inverse_relationship_kind(relationship_kind)) # Inverse Relationship
       end
     end
   end

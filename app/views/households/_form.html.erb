@@ -38,15 +38,7 @@
   </div>
 
   <br />
- 
-  <%if @relationships.present?%>
-    <div>
-      <h3> Relationships: </h3>
-      <%@relationships.each do |rel|%>
-        <li><%= print_relationship(rel) %></li>
-      <%end%>
-    </div>
-  <%end%>
+ <%= render 'relationship_matrix'  if @relationships.present?%>
   
   <br/><br/>
 
