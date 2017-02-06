@@ -11,12 +11,11 @@
   <% end %>
   <%if f.object.new_record?%>
     <table>
-        <tb>Primary Applicant</td>
+        <td>Primary Applicant: </td>
         <%= f.fields_for :household_members do |hm| %>
           <td><%= hm.text_field :name%></td>
           <%= hm.hidden_field :is_primary, value: true%>
         <% end %> 
-      </tbody>
     </table>
   <%else%>
     <table>
@@ -36,10 +35,8 @@
   <div class="actions">
     <%= f.submit %>
   </div>
-
   <br />
- <%= render 'relationship_matrix'  if @relationships.present?%>
- <%= render 'relationship_questions'  if @relationships.present?%>
+  <%= render 'relationship_matrix'  if @relationships.present?%>
+  <%= render 'relationship_questions'  if @relationships.present?%>
   <br/>
-
 <% end %>
