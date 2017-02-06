@@ -1,5 +1,8 @@
 <div>
-  <h4>Minimum number questions that user needs to answer: <%=@missing_relationships.count%></h4>
-  <%=@missing_relationships%>
-  
+  <br/> Minimum number questions that user needs to answer: <%=@missing_relationships.count%> <br /><br />
+  <b>Relationship of: </b>
+  <%@missing_relationships.each do |rel|%>
+    <li><%=member_name_by_id(rel.flatten.first)%> to <%=member_name_by_id(rel.flatten.second)%> </li>
+  <%end%>
+
 </div>

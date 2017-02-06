@@ -69,11 +69,14 @@ class Household < ActiveRecord::Base
   end
 
   def find_missing_relationships(matrix)
+    id_map = {}
+    household_members_id = household_members.map(&:id)
+    household_members_id.each_with_index { |hmid, index| id_map.merge!(index => hmid ) }
     missing_relationships = []
     matrix.each_with_index do |x, xi|
       x.each_with_index do |y, yi|
         if (xi > yi) && matrix[xi][yi].blank?
-          missing_relationships << {xi => yi}
+          missing_relationships << {id_map[xi] => id_map[yi]}
         end
       end
     end

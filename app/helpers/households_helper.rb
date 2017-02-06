@@ -16,4 +16,8 @@ module HouseholdsHelper
     rel = household_member.relationships.where(predecessor_id: household_member.id).first
     rel.present? ? HouseholdMember.find(rel.successor_id).name : "" 
   end
+
+  def member_name_by_id(id)
+    @household.household_members.where(id: id).first.name
+  end
 end
