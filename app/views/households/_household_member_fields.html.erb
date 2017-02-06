@@ -1,12 +1,23 @@
 <tbody>
   <td><%= f.text_field :name, value: f.object[:name]%></td>
   <td>&nbsp;&nbsp;&nbsp;</td>
-  <td><%= f.select :relationship, HouseholdMember::RELATIONSHIP_KINDS, include_blank: true, selected: find_relationship(f.object)%></td>
+  <td align = "center">
+    <%if f.object.is_primary?%>
+      [ self ]
+    <%else%>
+      <%= f.select :relationship, HouseholdMember::RELATIONSHIP_KINDS, include_blank: true, selected: find_relationship(f.object)%>
+    <%end%>
+  </td>
   <td>&nbsp;&nbsp;&nbsp;</td>
-  <td>
+  <td align = "center">
     
     <%#= f.text_field :name_related, list: "names", value: f.object.household.present? && !f.object.is_primary? ? f.object.household.primary_member.name : ""%>
-    <%= f.text_field :name_related, value: f.object.is_primary? ? "" : @household.primary_member.name, readonly: true %>
+    <%if f.object.is_primary?%>
+      [ <%=f.object.name%> ]
+    <%else%>
+      <%= f.text_field :name_related, value: f.object.is_primary? ? "" : @household.primary_member.name, readonly: true %>
+    <%end%>
+    
     <%#= f.text_field :name_related, list: "names", value: find_relation_to(f.object), disabled: true %>
     <datalist id="names">
       <% @members.where(is_primary: true).each do |person| %>
