@@ -67,22 +67,7 @@ class Household < ActiveRecord::Base
         matrix[yi][xi] = find_existing_relationship(id_map[yi], id_map[xi]) # Populate Inverse
       end
     end
-    
     return matrix
-
-    # matrix.each_with_index do |x, xi|
-    #   x.each_with_index do |y, yi|
-    #     puts "element [#{xi}, #{yi}] is #{y}"
-    #   end
-    # end
-
-    # # visual representation 
-    # puts household_members.map(&:name).join("            ")
-    # puts household_members.map(&:id).join("               ")
-    # matrix.each do |r|
-    #   puts r.each { |p| p }.join("         ")
-    # end
-
   end
 
   def find_existing_relationship(member_a_id, member_b_id)
