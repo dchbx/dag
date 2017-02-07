@@ -1,4 +1,4 @@
-<table cellpadding="30">
+<table>
   <tr>
     <td>
       <%= form_for(@household) do |f| %>
@@ -23,9 +23,9 @@
         <%else%>
           <table>
             <th>Member's</th>
-            <th>&nbsp;&nbsp;&nbsp;</th>
+            <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
             <th>Relation to</th>
-            <th>&nbsp;&nbsp;&nbsp;</th>
+            <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
             <th>Primary</th>
             <%= f.fields_for :household_members do |builder| %>
               <%=render 'household_member_fields', f: builder%>
@@ -39,18 +39,18 @@
           <%= f.submit %>
         </div>
         <br />
-
-        <%= render 'relationship_matrix'  if @relationships.present?%>
-        <div>
-          <br/> Minimum number of questions to ask the applicant: <%=@missing_relationships.count%> <br /><br />
-          <%if @missing_relationships.count > 0 %><b>Relationship of: </b><%end%>
-          <ol>
-            <%@missing_relationships.each do |rel|%>
-              <li><%=member_name_by_id(rel.flatten.first)%> to <%=member_name_by_id(rel.flatten.second)%> </li>
-            <%end%>
-          </ol>
-        </div>
-
+        <%if @relationships.present?%>
+          <%= render 'relationship_matrix'%>
+          <div>
+            <br/> Minimum number of questions to ask the applicant: <%=@missing_relationships.count%> <br /><br />
+            <%if @missing_relationships.count > 0 %><b>Relationship of: </b><%end%>
+            <ol>
+              <%@missing_relationships.each do |rel|%>
+                <li><%=member_name_by_id(rel.flatten.first)%> to <%=member_name_by_id(rel.flatten.second)%> </li>
+              <%end%>
+            </ol>
+          </div>
+        <%end%>
         <br/>
       <% end %>
     </td>
