@@ -59,6 +59,7 @@ class Household < ActiveRecord::Base
         matrix[yi][xi] = find_existing_relationship(id_map[yi], id_map[xi]) # Populate Inverse
       end
     end
+    matrix = apply_rules(matrix)
     return matrix
   end
 
@@ -81,6 +82,13 @@ class Household < ActiveRecord::Base
       end
     end
     missing_relationships
+  end
+
+  def apply_rules(matrix)
+    # Rule No 1: If A->B is Parent Relationship and B->C is also Parent Relationship then, A->C is Grandparent.
+    # Rule No 2: If A->B is Child Relationship and B->C is also Child Relationship then, A->C is Grandchild.
+    # THINK ? Rule No.3: A and B are unrelated if A's & B's parent are not related.
+    return matrix
   end
 
 end

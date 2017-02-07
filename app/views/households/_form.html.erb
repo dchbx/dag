@@ -1,42 +1,62 @@
-<%= form_for(@household) do |f| %>
-  <% if @household.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@household.errors.count, "error") %> prohibited this household from being saved:</h2>
-      <ul>
-      <% @household.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+<table cellpadding="30">
+  <tr>
+    <td>
+      <%= form_for(@household) do |f| %>
+        <% if @household.errors.any? %>
+          <div id="error_explanation">
+            <h2><%= pluralize(@household.errors.count, "error") %> prohibited this household from being saved:</h2>
+            <ul>
+            <% @household.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+            </ul>
+          </div>
+        <% end %>
+        <%if f.object.new_record?%>
+          <table>
+              <td>Primary Applicant: </td>
+              <%= f.fields_for :household_members do |hm| %>
+                <td><%= hm.text_field :name%></td>
+                <%= hm.hidden_field :is_primary, value: true%>
+              <% end %>
+          </table>
+        <%else%>
+          <table>
+            <th>Member's</th>
+            <th>&nbsp;&nbsp;&nbsp;</th>
+            <th>Relation to</th>
+            <th>&nbsp;&nbsp;&nbsp;</th>
+            <th>Primary</th>
+            <%= f.fields_for :household_members do |builder| %>
+              <%=render 'household_member_fields', f: builder%>
+            <% end %>
+          <table>
+          <%= link_to_add_fields "Add New Member", f, :household_members %>
+          <br/>
+        <%end%>
+        <br />
+        <div class="actions">
+          <%= f.submit %>
+        </div>
+        <br />
+
+        <%= render 'relationship_matrix'  if @relationships.present?%>
+        <div>
+          <br/> Minimum number of questions to ask the applicant: <%=@missing_relationships.count%> <br /><br />
+          <%if @missing_relationships.count > 0 %><b>Relationship of: </b><%end%>
+          <ol>
+            <%@missing_relationships.each do |rel|%>
+              <li><%=member_name_by_id(rel.flatten.first)%> to <%=member_name_by_id(rel.flatten.second)%> </li>
+            <%end%>
+          </ol>
+        </div>
+
+        <br/>
       <% end %>
-      </ul>
-    </div>
-  <% end %>
-  <%if f.object.new_record?%>
-    <table>
-        <td>Primary Applicant: </td>
-        <%= f.fields_for :household_members do |hm| %>
-          <td><%= hm.text_field :name%></td>
-          <%= hm.hidden_field :is_primary, value: true%>
-        <% end %> 
-    </table>
-  <%else%>
-    <table>
-      <th>Member's</th>
-      <th>&nbsp;&nbsp;&nbsp;</th>
-      <th>Relation to</th>
-      <th>&nbsp;&nbsp;&nbsp;</th>
-      <th>Primary</th>
-      <%= f.fields_for :household_members do |builder| %>
-        <%=render 'household_member_fields', f: builder%>
-      <% end %>
-    <table>
-    <%= link_to_add_fields "Add New Member", f, :household_members %>
-    <br/>
-  <%end%>
-  <br />
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-  <br />
-  <%= render 'relationship_matrix'  if @relationships.present?%>
-  <%= render 'relationship_questions'  if @relationships.present?%>
-  <br/>
-<% end %>
+    </td>
+
+    <td>
+      <%= render 'relationship_questions' if @relationships.present?%>
+    </td>
+  </tr>
+</table>

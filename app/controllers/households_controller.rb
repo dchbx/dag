@@ -26,6 +26,7 @@ class HouseholdsController < ApplicationController
     @relationships = Relationship.where(household_id: params[:id])
     @matrix = @household.build_relationship_matrix
     @missing_relationships = @household.find_missing_relationships(@matrix)
+    @relationship_kinds = HouseholdMember::RELATIONSHIP_KINDS
   end
 
   # POST /households
@@ -72,6 +73,16 @@ class HouseholdsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to households_url, notice: 'Household was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def add_relationship
+    @household = Household.find(params[:household_id])
+    predecessor = @household.household_members.where(id: params[:predecessor_id]).first
+    successor = @household.household_members.where(id: params[:successor_id]).first
+    predecessor.add_relationship(successor, params[:relationship])
+    respond_to do |format|
+      format.html { redirect_to edit_household_path(@household), notice: 'Relationship was successfully updated.' }
     end
   end
 

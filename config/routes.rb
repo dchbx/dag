@@ -59,5 +59,10 @@ Rails.application.routes.draw do
 
   resources :households
   resources :household_members
+
+  match '/add_relationship',      to: 'households#add_relationship',        via: 'get'
+  match '/add_relationship',      to: 'households#add_relationship',        via: 'post'
+
+
   
 end

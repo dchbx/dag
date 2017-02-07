@@ -1,9 +1,23 @@
-<div>
-  <br/> Minimum number of questions to ask the applicant: <%=@missing_relationships.count%> <br /><br />
-  <%if @missing_relationships.count > 0 %><b>Relationship of: </b><%end%>
-  <ol>
-    <%@missing_relationships.each do |rel|%>
-      <li><%=member_name_by_id(rel.flatten.first)%> to <%=member_name_by_id(rel.flatten.second)%> </li>
-    <%end%>
-  </ol>
-</div>
+<%if @missing_relationships.present?%>
+  <h4><i>Answer the relationship question below:</i></h4>
+  <%= form_tag(:action => "add_relationship") do %>
+    <%= hidden_field_tag :household_id, params[:id]%>
+    <%= hidden_field_tag :predecessor_id, @missing_relationships.first.flatten.first%>
+    <%= hidden_field_tag :successor_id, @missing_relationships.first.flatten.second%>
+    <table>
+      <tr>
+        <th style="padding-right:30px;"> Member A </th>
+        <th style="padding-right:30px;"> Relationship to </th>
+        <th style="padding-right:30px;"> Member B </th>
+      </tr>
+      <tr>
+        <td><%= member_name_by_id(@missing_relationships.first.flatten.first) %></td>
+        <td><%= select_tag "relationship", options_for_select(@relationship_kinds), include_blank: true%></td>
+        <td><%= member_name_by_id(@missing_relationships.first.flatten.second) %></td>
+      </tr>
+    </table>
+    <br />
+    <%= submit_tag "Add Relationship" %>
+  <% end %>
+<%end%>
+

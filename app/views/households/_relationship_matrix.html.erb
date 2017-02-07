@@ -24,10 +24,10 @@
       <%end%>
     </thead>
     <tbody>
-      <%@matrix.each_with_index do |relationships_row, index|%>
+      <%@matrix.each_with_index do |relationships_row, index_x|%>
         <tr>
-          <td><b><%=@members[index].name%></b></td>
-          <%relationships_row.each do |rel|%>
+          <td><b><%=@members[index_x].name%></b></td>
+          <%relationships_row.each_with_index do |rel, index_y|%>
             <td><small><%= rel.titleize if rel.present?%></small></td>
           <%end%>
         </tr>
@@ -35,3 +35,4 @@
     </tbody>
   </table>
 </div>
+
