@@ -85,6 +85,7 @@ class Household < ActiveRecord::Base
   end
 
   def apply_rules_and_update_relationships(matrix)
+    missing_relationship = find_missing_relationships(matrix)
     # Rule No 1: If A->B is Parent Relationship and B->C is also Parent Relationship then, A->C is Grandparent.
     # Rule No 2: If A->B is Child Relationship and B->C is also Child Relationship then, A->C is Grandchild.
     # Rule No.3: A and B are unrelated if A's & B's parent are not related.?
