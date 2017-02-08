@@ -5,7 +5,7 @@ class HouseholdMember < ActiveRecord::Base
   #serialize :successors, Array
   belongs_to :household
   has_many :relationships, dependent: :destroy
-  RELATIONSHIP_KINDS = %w(spouse mother father child unrelated grandchild aunt_uncle niece_nephew grandparent)
+  RELATIONSHIP_KINDS = %w(spouse parent child unrelated grandchild aunt_uncle niece_nephew grandparent sibling)
 
   #field :family_member_id, type: BSON::ObjectId
 

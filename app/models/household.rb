@@ -3,17 +3,15 @@ class Household < ActiveRecord::Base
   has_many :household_members
   accepts_nested_attributes_for :household_members, allow_destroy: true
 
-  RELATIONSHIP_INVERSE_KINDS = { mother: :child, 
-                                father: :child, 
-                                uncle: :no_relation, 
-                                aunt: :no_relation,
+  RELATIONSHIP_INVERSE_KINDS = { parent: :child,
                                 spouse: :spouse,
                                 child: :parent,
                                 unrelated: :unrelated,
                                 grandchild: :grandparent,
                                 aunt_uncle: :niece_nephew,
                                 niece_nephew: :aunt_uncle,
-                                grandparent: :grandchild }
+                                grandparent: :grandchild,
+                                sibling: :sibling }
 
   after_initialize do |household|
     @household_members ||= {}
@@ -86,6 +84,30 @@ class Household < ActiveRecord::Base
 
   def apply_rules_and_update_relationships(matrix)
     missing_relationship = find_missing_relationships(matrix)
+
+    #Sibling rule
+    missing_relationship.each do |rel|
+      relation = Relationship.where(household_id: self.id, predecessor_id: rel.to_a.flatten, relationship: "child")
+      s_ids = relation.collect(&:successor_id)
+
+      if s_ids.count > s_ids.uniq.count
+        members = household_members.where(id: rel.to_a.flatten)
+        members.first.add_relationship(members.last, "sibling")
+      end
+    end
+
+    #GrandParent-GrandChild Rule
+    missing_relationship.each do |rel|
+      relation = Relationship.where(household_id: self.id, successor_id: rel.to_a.flatten, relationship: ['parent', 'child'])
+      r_types = relation.collect(&:relationship)
+
+      if r_types.uniq.count >= 2
+        grandchild = household_members.where(id: relation.where(relationship: 'parent').first.successor_id).first
+        grandparent = household_members.where(id: relation.where(relationship: 'child').first.successor_id).first
+        grandparent.add_relationship(grandchild, "grandparent")
+      end
+    end
+
     # Rule No 1: If A->B is Parent Relationship and B->C is also Parent Relationship then, A->C is Grandparent.
     # Rule No 2: If A->B is Child Relationship and B->C is also Child Relationship then, A->C is Grandchild.
     # Rule No.3: A and B are unrelated if A's & B's parent are not related.?
