@@ -56,6 +56,7 @@ class HouseholdsController < ApplicationController
           relationship_kind = member[1][:relationship]
           @household.add_household_member(@household.household_members.find_by_name(predecessor_name))
           @household.add_relationship(predecessor_name, successor_name, relationship_kind)
+          @household.build_relationship_matrix
         end
         format.html { redirect_to edit_household_path(@household), notice: 'Household was successfully updated.' }
         format.json { render :show, status: :ok, location: @household }

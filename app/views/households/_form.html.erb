@@ -31,18 +31,18 @@
               <%=render 'household_member_fields', f: builder%>
             <% end %>
           <table>
-          <%= link_to_add_fields "Add New Member", f, :household_members %>
+          <%= link_to_add_fields "Add New Row", f, :household_members %>
           <br/>
         <%end%>
         <br />
         <div class="actions">
-          <%= f.submit %>
+          <%= f.submit "Add Member" %>
         </div>
         <br />
         <%if @relationships.present?%>
           <%= render 'relationship_matrix'%>
           <div>
-            <br/> Minimum number of questions to ask the applicant: <%=@missing_relationships.count%> <br /><br />
+            <br/> Undefined Relationships: <b/><%=@missing_relationships.count%></b> <br /><br />
             <%if @missing_relationships.count > 0 %><b>Relationship of: </b><%end%>
             <ol>
               <%@missing_relationships.each do |rel|%>
