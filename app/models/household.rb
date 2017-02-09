@@ -100,8 +100,9 @@ class Household < ActiveRecord::Base
     missing_relationship.each do |rel|
       relation = Relationship.where(household_id: self.id, successor_id: rel.to_a.flatten, relationship: ['parent', 'child'])
       r_types = relation.collect(&:relationship)
+      s_ids = relation.collect(&:predecessor_id)
 
-      if r_types.uniq.count >= 2
+      if r_types.uniq.count >= 2 && s_ids.count != s_ids.uniq.count
         grandchild = household_members.where(id: relation.where(relationship: 'parent').first.successor_id).first
         grandparent = household_members.where(id: relation.where(relationship: 'child').first.successor_id).first
         grandparent.add_relationship(grandchild, "grandparent")
