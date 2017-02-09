@@ -82,6 +82,7 @@ class HouseholdsController < ApplicationController
     predecessor = @household.household_members.where(id: params[:predecessor_id]).first
     successor = @household.household_members.where(id: params[:successor_id]).first
     predecessor.add_relationship(successor, params[:relationship])
+    @household.build_relationship_matrix
     respond_to do |format|
       format.html { redirect_to edit_household_path(@household), notice: 'Relationship was successfully updated.' }
     end
