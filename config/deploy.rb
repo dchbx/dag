@@ -43,7 +43,7 @@ namespace :deploy do
   desc 'Restart application'
   task :restart do
     on roles(:app), in: :sequence, wait: 20 do
-      sudo "service dag reload"
+      sudo "service eye_dag reload"
     end
   end
 end
