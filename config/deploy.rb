@@ -31,7 +31,7 @@ set :pty, true
 # set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, fetch(:linked_files, []).push('config/sneakers.conf.rb', 'config/settings.yml', 'eyes/dag.eye.rb')
+set :linked_files, fetch(:linked_files, []).push('config/unicorn.rb', 'config/secrets.yml', 'eyes/dag.eye.rb')
 
 # Default value for linked_dirs is []
 set :linked_dirs, fetch(:linked_dirs, []).push('log', 'pids', 'eye')
